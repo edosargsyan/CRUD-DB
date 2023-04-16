@@ -1,6 +1,7 @@
 let express = require('express')
 let mongoose = require('mongoose')
 let app = express();
+
 let Post = require('./model.js')
 const router = require('./router.js')
 app.use(express.urlencoded({
@@ -8,7 +9,6 @@ app.use(express.urlencoded({
 }))
 app.use(express.json())
 app.use(router)
-app.post('/',)
 async function start(){
     try{  
        await mongoose.connect('mongodb+srv://sargsyane628:Edo778899@cluster0.xsfuuqs.mongodb.net/?retryWrites=true&w=majority')

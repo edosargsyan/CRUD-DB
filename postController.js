@@ -1,10 +1,10 @@
 const { findByIdAndUpdate } = require('./model.js')
 let Post = require('./model.js')
+let postServices = require('./postServices.js')
 class postController {
     async create(req,res){
             try{
-                const{name, email, password } = req.body
-                const post = await Post.create({name,email,password})
+                const post = await postServices.create(req.body)
                 res.send(post)
             }
              catch(e){
@@ -14,7 +14,7 @@ class postController {
 
      async getAll(req,res){
          try{
-             const posts = await Post.find()
+             const posts = await postServices.getAll()
              return res.json(posts)                                                                
          }
          catch(e){
@@ -24,11 +24,7 @@ class postController {
 
      async getOne(req,res){
         try{
-           const {id} = req.params
-           const post = await Post.findById(id)
-           if(!id){
-            res.status(400).json({messgae:"Not Found"})
-            }
+           const post = await postServices.getOne(req.params.id)
            return res.json(post)
         }
         catch(e){
@@ -37,11 +33,7 @@ class postController {
      }
      async update(req,res){
         try{
-           const post = req.body
-           if(!post._id){
-            res.status(400).json({messgae:"Not Found"})
-           }
-           const updatedPost = await Post.findByIdAndUpdate(post._id,post,{new:true})
+           const updatedPost = await postServices.update(req.body)
            return res.json(updatedPost)
         }
         catch(e){
@@ -50,12 +42,8 @@ class postController {
      }
      async delete(req,res){
         try{
-         const {id} = req.params
-         const post = await Post.findByIdAndDelete(id)
-         if(!id){
-            res.status(400).json({messgae:"Not Found"})
-         }
-         return res.send('deleted')
+         const post = await postServices.delete()
+         return res.send(post)
         }
         catch(e){
            res.status(500).json(e)
